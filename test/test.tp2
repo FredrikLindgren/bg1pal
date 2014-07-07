@@ -1,0 +1,70 @@
+BACKUP "test/backup"
+AUTHOR Wisp
+
+BEGIN ~fl#bg1pal test suite~
+
+INCLUDE ~%MOD_FOLDER%/fl#bg1pal.tpa~
+
+ACTION_DEFINE_ARRAY file_list BEGIN
+                    ar0125.are
+                    isw2h07.bam
+                    ctdc.bcs
+                    ar0125sr.bmp
+                    calaha.cre
+                    alora.dlg
+                    bdynah.dlg
+                    misc83.itm
+                    misc84.itm
+                    sw1h16.itm
+                    sw2h01.itm
+                    worldmap.mos
+                    intro.mve
+                    spin996.spl
+                    highhedg.sto
+                    black01.wav
+END
+
+DEFINE_ACTION_FUNCTION fe
+  STR_VAR
+    file = ""
+BEGIN
+  ACTION_IF !FILE_EXISTS_IN_GAME "%file%" BEGIN
+    WARN ~WARNING: The file %file% does not exist~
+  END ELSE BEGIN
+    PRINT ~The file %file% exists~
+  END
+END
+
+DEFINE_ACTION_FUNCTION test_file_list BEGIN
+  ACTION_PHP_EACH file_list AS _ => file BEGIN
+    LAF fl#bg1pal STR_VAR file RET file END
+    LAF fe STR_VAR file END
+  END
+END
+
+DEFINE_ACTION_FUNCTION test_tutu BEGIN
+  LAF test_file_list END
+END
+
+DEFINE_ACTION_FUNCTION test_bgt BEGIN
+  LAF test_file_list END
+END
+
+DEFINE_ACTION_FUNCTION test_bg1 BEGIN
+  LAF test_file_list END
+END
+
+ACTION_IF GAME_IS ~tutu tutu_totsc~ BEGIN
+  PRINT ~Testing resource conversion on Tutu~
+  LAF test_tutu END
+END
+
+ACTION_IF GAME_IS ~bgt~ BEGIN
+  PRINT ~Testing resource conversion on BGT~
+  LAF test_bgt END
+END
+
+ACTION_IF GAME_IS ~bg1 totsc bgee~ BEGIN
+  PRINT ~Testing resource conversion on BG1/BG:EE~
+  LAF test_bg1 END
+END
