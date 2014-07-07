@@ -24,6 +24,14 @@ ACTION_DEFINE_ARRAY file_list BEGIN
                     black01.wav
 END
 
+ACTION_DEFINE_ARRAY area_list BEGIN
+                    ar0125
+END
+
+ACTION_DEFINE_ARRAY movie_list BEGIN
+                    intro
+END
+
 DEFINE_ACTION_FUNCTION fe
   STR_VAR
     file = ""
@@ -42,16 +50,35 @@ DEFINE_ACTION_FUNCTION test_file_list BEGIN
   END
 END
 
+DEFINE_ACTION_FUNCTION test_resource_list
+  STR_VAR
+    list = ""
+    type = ""
+BEGIN
+  ACTION_PHP_EACH "%list%" AS _ => resource BEGIN
+    LAF fl#bg1pal STR_VAR resource type RET resource type END
+    LAF fe STR_VAR file = EVAL "%resource%.%type%" END
+  END
+END
+
+DEFINE_ACTION_FUNCTION test_all_resource_lists BEGIN
+  LAF test_resource_list STR_VAR list = "area_list" type = "ARE" END
+  LAF test_resource_list STR_VAR list = "movie_list" type = "MVE" END
+END
+
 DEFINE_ACTION_FUNCTION test_tutu BEGIN
   LAF test_file_list END
+  LAF test_all_resource_lists END
 END
 
 DEFINE_ACTION_FUNCTION test_bgt BEGIN
   LAF test_file_list END
+  LAF test_all_resource_lists END
 END
 
 DEFINE_ACTION_FUNCTION test_bg1 BEGIN
   LAF test_file_list END
+  LAF test_all_resource_lists END
 END
 
 ACTION_IF GAME_IS ~tutu tutu_totsc~ BEGIN

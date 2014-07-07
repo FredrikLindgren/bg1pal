@@ -15,8 +15,12 @@ OUTER_SPRINT fl#bg1pal#version "1.0.0"
 DEFINE_ACTION_FUNCTION fl#bg1pal
   STR_VAR
     file = ""
+    resource = ""
+    type = ""
   RET
     file
+    resource
+    type
 BEGIN
   OUTER_SET BGT = 0
   OUTER_SET TUTU = 0
@@ -28,9 +32,19 @@ BEGIN
   END ELSE ACTION_IF GAME_IS ~bgee~ BEGIN
     OUTER_SET BGEE = 1
   END
-  ACTION_IF "%file%" STR_CMP "" AND (BGT OR TUTU OR BGEE) BEGIN
-    ACTION_TO_LOWER file
-    LAF fl#bg1pal#partition_file STR_VAR file RET res ext END
+  ACTION_IF (BGT OR TUTU OR BGEE) AND
+            ("%file%" STR_CMP "" OR "%resource%" STR_CMP "")
+  BEGIN
+    ACTION_IF "%file%" STR_CMP "" BEGIN
+      ACTION_TO_LOWER file
+      LAF fl#bg1pal#partition_file STR_VAR file RET res ext END
+    END ELSE BEGIN
+      ACTION_TO_LOWER resource
+      ACTION_TO_LOWER type
+      OUTER_SPRINT res "%resource%"
+      OUTER_SPRINT ext "%type%"
+    END
+
     ACTION_IF BGT BEGIN
       LAF fl#bg1pal#bgt STR_VAR res ext RET res END
     END
@@ -41,17 +55,23 @@ BEGIN
       LAF fl#bg1pal#bgee STR_VAR res ext RET res ext END
     END
     OUTER_SPRINT file "%res%.%ext%"
+    OUTER_SPRINT resource "%res%"
+    OUTER_SPRINT type "%ext%"
   END
 END
 
 DEFINE_PATCH_FUNCTION fl#bg1pal
   STR_VAR
     file = ""
+    resource = ""
+    type = ""
   RET
     file
+    resource
+    type
 BEGIN
   INNER_ACTION BEGIN
-    LAF fl#bg1pal STR_VAR file RET file END
+    LAF fl#bg1pal STR_VAR file resource type RET file resource type END
   END
 END
 
