@@ -918,7 +918,7 @@ DEFINE_ACTION_FUNCTION fl#bg1pal#partition_file
 BEGIN
   OUTER_SET slength = STRING_LENGTH "%file%"
   ACTION_IF slength > 0 BEGIN
-    OUTER_SET length = RINDEX ("." file)
+    OUTER_SET length = RINDEX ("\." "%file%")
     ACTION_IF length > 0 BEGIN
       LAF SUBSTRING
         INT_VAR
