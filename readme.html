@@ -1,0 +1,102 @@
+<!doctype html>
+
+<html>
+  <head>
+    <title>BG1 Platform-Abstraction Layer</title>
+    <meta charset="utf-8">
+  </head>
+
+  <body>
+    <h1>BG1 Platform-Abstraction Layer</h1>
+
+    <p>The BG1 Platform-Abstraction Layer (BG1PAL) is a library
+      intended to facilitate platform compatibility for BG1 mods. The
+      major BG1 platforms all use different naming schemes for their
+      BG1 resources, which could require mods that target more than
+      one platform to refer to the same resource by a different name
+      for each of the targeted platforms. BG1PAL relieves the mod
+      author of the burden of keeping track of which files differ
+      between platforms, how they differ, what exceptions there are
+      from expectations, and several other complicating factors
+      involved in cross-platform resource naming. It does this by
+      spanning all major BG1 platforms and accounting for all their
+      known differences, exceptions and idiosyncrasies compared to one
+      reference platform: the original edition of <i>Baldur's
+      Gate</i>, including its expansion, <i>Tales of the Sword
+      Coast</i>. In other words, the mod author refers to a resource
+      by its canonical BG1 name and BG1PAL converts it into the right
+      resource name for whatever BG1 platform the mod happens to be
+      installed on.
+    </p>
+    <p>Supported platforms are:</p>
+    <ul>
+      <li><i>Baldur's Gate</i>, including <i>Tales of the Sword
+          Coast</i>
+      </li>
+      <li><i>EasyTutu</i></li>
+      <li><i>Baldur's Gate Trilogy</i></li>
+      <li><i>Baldur's Gate: Enhanced Edition</i></li>
+    </ul>
+
+    <h2>Usage</h2>
+    <p>To use BG1PAL in your mod, place the file fl#bg1pal.tpa within
+      your mod folder and add the following line to your TP2 file, for
+      example, in its <code>ALWAYS</code> section.
+    </p>
+    <blockquote>
+      <code>INCLUDE</code> <code>~yourmod/path/to/fl#bg1pal.tpa~</code>
+    </blockquote>
+    <p>BG1PAL provides the function <code>fl#bg1pal</code>, which is
+      available both as an action and a patch
+      function. <code>fl#bg1pal</code> has the string
+      variables <code>file</code>, <code>resource</code>
+      and <code>type</code> and the return
+      values <code>file</code>, <code>resource</code>
+      and <code>type</code>. Note that all return values are available
+      and usable regardless of which argument is provided. You are
+      thus, for example, able to provide the <code>file</code> string
+      variable, but use the <code>resource</code> return value.
+    </p>
+    <ul>
+      <li>String variables:
+        <ul>
+          <li><code>file</code> must be a valid file name,
+            including both the resource name as well as its file
+            extension, separated by a full stop in the conventional
+            style.
+          </li>
+          <li><code>resource</code> must be a valid resource name and
+            must not include a file extension. <code>resource</code>
+            requires <code>type</code>. <code>file</code> takes
+            precedence over <code>resource</code>.
+          </li>
+          <li><code>type</code> must be a valid resource type,
+            as determined by the corresponding file
+            extension. <code>type</code>
+            requires <code>resource</code>. <code>file</code> takes
+            precedence over <code>type</code>.
+          </li>
+        </ul>
+      </li>
+      <li>Return values:
+        <ul>
+          <li><code>file</code> returns the full file name of the
+            canonical resource, as it is named on the platform on
+            which the mod is being installed.
+          </li>
+          <li><code>resource</code> returns the resource name of the
+            canonical resource, as it is named on the platform on
+            which the mod is being installed.
+          </li>
+          <li><code>type</code> returns the resource type of the
+            canonical resource, in the form of its appropriate file
+            extension for the platform on which the mod is being
+            installed.
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+    <h2>Version History</h2>
+  </body>
+</html>

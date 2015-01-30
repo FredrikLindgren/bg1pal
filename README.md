@@ -7,8 +7,7 @@ Gate Tutu, Baldur's Gate Trilogy and Baldur's Gate: Enhanced Edition.
 The BG1 Platform-Abstraction Layer converts canonical resource names
 into the appropriate form for the current platform via the function
 fl#bg1pal, which is available both as an action and a patch
-function. All known resource-name variants and exceptions are
-supported.
+function. All resource names and resource types are supported.
 
 Example:
 ```
