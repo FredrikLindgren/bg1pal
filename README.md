@@ -1,10 +1,10 @@
-# BG1 Platform-Abstraction Layer
+# BG1 Platform-Abstraction Library
 
 This is a resource-name abstraction library for the different versions
 of Baldur's Gate. Supported versions are plain Baldur's Gate, Baldur's
 Gate Tutu, Baldur's Gate Trilogy and Baldur's Gate: Enhanced Edition.
 
-The BG1 Platform-Abstraction Layer converts canonical resource names
+The BG1 Platform-Abstraction Library converts canonical resource names
 into the appropriate form for the current platform via the function
 fl#bg1pal, which is available both as an action and a patch
 function. All resource names and resource types are supported.
