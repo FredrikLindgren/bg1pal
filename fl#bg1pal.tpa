@@ -95,10 +95,115 @@ END
  * Private interface
  ********************************************************************/
 
+DEFINE_ACTION_FUNCTION fl#bg1pal#bgt
+  STR_VAR
+    res = ""
+    ext = ""
+  RET
+    res
+BEGIN
+  ACTION_MATCH "%ext%" WITH
+    are mos wed WHEN VARIABLE_IS_SET $fl#bg1pal#bgt#area("%res%")
+    BEGIN
+      OUTER_SPRINT res $fl#bg1pal#bgt#area("%res%")
+    END
+    bam WHEN VARIABLE_IS_SET $fl#bg1pal#bgt#bam("%res%")
+    BEGIN
+      OUTER_SPRINT res $fl#bg1pal#bgt#bam("%res%")
+    END
+    bcs WHEN VARIABLE_IS_SET $fl#bg1pal#bgt#bcs("%res%")
+    BEGIN
+      OUTER_SPRINT res $fl#bg1pal#bgt#bcs("%res%")
+    END
+    bmp WHEN "%res%" STRING_MATCHES_REGEXP "^ar[0-9]+\(ht\|lm\|sr\)$" = 0
+    BEGIN
+      LAF fl#bg1pal#bgt#area_bmp STR_VAR res RET res END
+    END
+    cre WHEN VARIABLE_IS_SET $fl#bg1pal#bgt#cre("%res%")
+    BEGIN
+      OUTER_SPRINT res $fl#bg1pal#bgt#cre("%res%")
+    END
+    dlg WHEN VARIABLE_IS_SET $fl#bg1pal#bgt#dlg("%res%")
+    BEGIN
+      OUTER_SPRINT res $fl#bg1pal#bgt#dlg("%res%")
+    END
+    itm WHEN VARIABLE_IS_SET $fl#bg1pal#bgt#itm("%res%")
+    BEGIN
+      OUTER_SPRINT res $fl#bg1pal#bgt#itm("%res%")
+    END
+    mve WHEN VARIABLE_IS_SET $fl#bg1pal#bgt#mve("%res%")
+    BEGIN
+      OUTER_SPRINT res $fl#bg1pal#bgt#mve("%res%")
+    END
+    spl WHEN VARIABLE_IS_SET $fl#bg1pal#bgt#spl("%res%")
+    BEGIN
+      OUTER_SPRINT res $fl#bg1pal#bgt#spl("%res%")
+    END
+    wav WHEN VARIABLE_IS_SET $fl#bg1pal#bgt#wav("%res%")
+    BEGIN
+      OUTER_SPRINT res $fl#bg1pal#bgt#wav("%res%")
+    END
+    DEFAULT
+  END
+END
+
+DEFINE_ACTION_FUNCTION fl#bg1pal#tutu
+  STR_VAR
+    res = ""
+    ext = ""
+  RET
+    res
+BEGIN
+  ACTION_MATCH "%ext%" WITH
+    are mos wed WHEN "%res%" STRING_MATCHES_REGEXP "^ar[0-9]+$" = 0
+    BEGIN
+      LAF fl#bg1pal#tutu#fw STR_VAR res RET res END
+    END
+    bmp WHEN "%res%" STRING_MATCHES_REGEXP "^ar[0-9]+\(ht\|lm\|sr\)$" = 0
+    BEGIN
+      LAF fl#bg1pal#tutu#fw STR_VAR res RET res END
+    END
+    itm WHEN !VARIABLE_IS_SET $fl#bg1pal#tutu#itm("%res%")
+    BEGIN
+      LAF fl#bg1pal#tutu#underscore STR_VAR res RET res END
+    END
+    mos WHEN "%res%" STRING_EQUAL_CASE "worldmap" // compat array instead?
+    BEGIN
+      LAF fl#bg1pal#tutu#underscore STR_VAR res RET res END
+    END
+    bam bcs bmp cre dlg mve sto tis wav
+    BEGIN
+      LAF fl#bg1pal#tutu#underscore STR_VAR res RET res END
+    END
+    DEFAULT
+  END
+END
+
+DEFINE_ACTION_FUNCTION fl#bg1pal#bgee
+  STR_VAR
+    res = ""
+    ext = ""
+  RET
+    res
+    ext
+BEGIN
+  ACTION_MATCH "%ext%" WITH
+    mve
+    BEGIN
+      OUTER_SPRINT ext wbm
+    END
+    DEFAULT
+  END
+END
+
+/*********************************************************************
+ * BGT auxiliary definitions
+ ********************************************************************/
+
 /*
  * Lookup table for BG1 areas by BGT
  */
-ACTION_DEFINE_ASSOCIATIVE_ARRAY fl#bg1pal#bgt_compat_area BEGIN
+ACTION_DEFINE_ASSOCIATIVE_ARRAY fl#bg1pal#bgt#area BEGIN
   ar0002 => ara002
   ar0004 => ara004
   ar0005 => ara005
@@ -576,7 +681,7 @@ END
 /*
  * BG1 BAMs which are renamed by BGT
  */
-ACTION_DEFINE_ASSOCIATIVE_ARRAY fl#bg1pal#bgt_compat_bam BEGIN
+ACTION_DEFINE_ASSOCIATIVE_ARRAY fl#bg1pal#bgt#bam BEGIN
   isw1h18 => isw1hbal
   isw2h07 => bgisw2h7
 END
@@ -585,7 +690,7 @@ END
  * BG1 scripts which are renamed by BGT
  * BGT renames the bg2 resource "mage2" into "bg2mage2"
  */
-ACTION_DEFINE_ASSOCIATIVE_ARRAY fl#bg1pal#bgt_compat_bcs BEGIN
+ACTION_DEFINE_ASSOCIATIVE_ARRAY fl#bg1pal#bgt#bcs BEGIN
   ctdc => bgctdc
   ctmm => bgctmm
   gtmm => bggtmm
@@ -602,7 +707,7 @@ END
 /*
  * BG1 creatures which are renamed by BGT
  */
-ACTION_DEFINE_ASSOCIATIVE_ARRAY fl#bg1pal#bgt_compat_cre BEGIN
+ACTION_DEFINE_ASSOCIATIVE_ARRAY fl#bg1pal#bgt#cre BEGIN
   calaha   => bgcalaha
   carbos   => bgcarbos
   ftown2   => bgftown2
@@ -652,7 +757,7 @@ END
 /*
  * BG1 dialogues which are renamed by BGT
  */
-ACTION_DEFINE_ASSOCIATIVE_ARRAY fl#bg1pal#bgt_compat_dlg BEGIN
+ACTION_DEFINE_ASSOCIATIVE_ARRAY fl#bg1pal#bgt#dlg BEGIN
   bjahei => bjaheir
   bvicon => bviconi
   imoenp => imoen2p
@@ -692,7 +797,7 @@ END
 /*
  * BG1 items which are renamed by BGT
  */
-ACTION_DEFINE_ASSOCIATIVE_ARRAY fl#bg1pal#bgt_compat_itm BEGIN
+ACTION_DEFINE_ASSOCIATIVE_ARRAY fl#bg1pal#bgt#itm BEGIN
   helm15 => bghelm15
   misc56 => bgmisc56
   misc79 => bgmisc79
@@ -711,14 +816,14 @@ END
  * BG1 movies which are renamed by BGT
  * BGT also renamed BG2 files intro15f.mve and intro15f.2da into soaintro.*
  */
-ACTION_DEFINE_ASSOCIATIVE_ARRAY fl#bg1pal#bgt_compat_mve BEGIN
+ACTION_DEFINE_ASSOCIATIVE_ARRAY fl#bg1pal#bgt#mve BEGIN
   intro => bgintro
 END
 
 /*
  * BG1 spells which are renamed by BGT
  */
-ACTION_DEFINE_ASSOCIATIVE_ARRAY fl#bg1pal#bgt_compat_spl BEGIN
+ACTION_DEFINE_ASSOCIATIVE_ARRAY fl#bg1pal#bgt#spl BEGIN
   spin996 => bgin996
   sppr982 => bgpr982
   spwi003 => bgwi003
@@ -731,7 +836,7 @@ END
 /*
  * BG1 sounds which are renamed by BGT
  */
-ACTION_DEFINE_ASSOCIATIVE_ARRAY fl#bg1pal#bgt_compat_wav BEGIN
+ACTION_DEFINE_ASSOCIATIVE_ARRAY fl#bg1pal#bgt#wav BEGIN
   black01 => blackl01
   black02 => blackl02
   black03 => blackl03
@@ -852,11 +957,37 @@ ACTION_DEFINE_ASSOCIATIVE_ARRAY fl#bg1pal#bgt_compat_wav BEGIN
   umber06 => pumber06
 END
 
+DEFINE_ACTION_FUNCTION fl#bg1pal#bgt#area_bmp
+  STR_VAR
+    res = ""
+  RET
+    res
+BEGIN
+  ACTION_IF STRING_LENGTH "%res%" = 8 BEGIN
+    OUTER_INNER_PATCH "%res%" BEGIN
+      READ_ASCII 0 head (6)
+    END
+    OUTER_INNER_PATCH "%res%" BEGIN
+      READ_ASCII 6 tail (2)
+    END
+    ACTION_IF VARIABLE_IS_SET $fl#bg1pal#bgt#area("%head%") BEGIN
+      OUTER_SPRINT head $fl#bg1pal#bgt#area("%head%")
+    END
+    OUTER_SPRINT res "%head%%tail%"
+  END ELSE BEGIN
+    WARN "WARNING: %res% does not appear to be the name of a valid height, light or search map for Baldur's Gate Trilogy"
+  END
+END
+
+/*********************************************************************
+ * Tutu auxiliary definitions
+ ********************************************************************/
+
 /*
  * Items which do not use the conventional underscore in Tutu
  * unique items: macamul1, macring1
  */
-ACTION_DEFINE_ASSOCIATIVE_ARRAY fl#bg1pal#tutu_compat_itm BEGIN
+ACTION_DEFINE_ASSOCIATIVE_ARRAY fl#bg1pal#tutu#itm BEGIN
   misc07 => 1 //Hardcoded item (gold)
   ring25 => 1 //Needs to be recognisable to BG2 (Koveras' ring)
   misc47 => 1 //Needs to be recognisable to BG2 (Golden Pantaloons)
@@ -877,7 +1008,7 @@ ACTION_DEFINE_ASSOCIATIVE_ARRAY fl#bg1pal#tutu_compat_itm BEGIN
   //chan07 => 1 //_chan07 is used in EasyTutu
 END
 
-DEFINE_ACTION_FUNCTION fl#bg1pal#underscore
+DEFINE_ACTION_FUNCTION fl#bg1pal#tutu#underscore
   STR_VAR
     res = ""
   RET
@@ -892,7 +1023,7 @@ BEGIN
   END
 END
 
-DEFINE_ACTION_FUNCTION fl#bg1pal#fw
+DEFINE_ACTION_FUNCTION fl#bg1pal#tutu#fw
   STR_VAR
     res = ""
   RET
@@ -903,27 +1034,9 @@ BEGIN
   END
 END
 
-DEFINE_ACTION_FUNCTION fl#bg1pal#bgt_area_bmp
-  STR_VAR
-    res = ""
-  RET
-    res
-BEGIN
-  ACTION_IF STRING_LENGTH "%res%" = 8 BEGIN
-    OUTER_INNER_PATCH "%res%" BEGIN
-      READ_ASCII 0 head (6)
-    END
-    OUTER_INNER_PATCH "%res%" BEGIN
-      READ_ASCII 6 tail (2)
-    END
-    ACTION_IF VARIABLE_IS_SET $fl#bg1pal#bgt_compat_area("%head%") BEGIN
-      OUTER_SPRINT head $fl#bg1pal#bgt_compat_area("%head%")
-    END
-    OUTER_SPRINT res "%head%%tail%"
-  END ELSE BEGIN
-    WARN "WARNING: %res% does not appear to be the name of a valid height, light or search map for Baldur's Gate Trilogy"
-  END
-END
+/*********************************************************************
+ * General
+ ********************************************************************/
 
 DEFINE_ACTION_FUNCTION fl#bg1pal#partition_file
   STR_VAR
@@ -959,106 +1072,5 @@ BEGIN
     END
   END ELSE BEGIN
     WARN ~WARNING: fl#bg1pal#partition_file was given an empty string~
-  END
-END
-
-DEFINE_ACTION_FUNCTION fl#bg1pal#bgt
-  STR_VAR
-    res = ""
-    ext = ""
-  RET
-    res
-BEGIN
-  ACTION_MATCH "%ext%" WITH
-    are mos wed WHEN VARIABLE_IS_SET $fl#bg1pal#bgt_compat_area("%res%")
-    BEGIN
-      OUTER_SPRINT res $fl#bg1pal#bgt_compat_area("%res%")
-    END
-    bam WHEN VARIABLE_IS_SET $fl#bg1pal#bgt_compat_bam("%res%")
-    BEGIN
-      OUTER_SPRINT res $fl#bg1pal#bgt_compat_bam("%res%")
-    END
-    bcs WHEN VARIABLE_IS_SET $fl#bg1pal#bgt_compat_bcs("%res%")
-    BEGIN
-      OUTER_SPRINT res $fl#bg1pal#bgt_compat_bcs("%res%")
-    END
-    bmp WHEN "%res%" STRING_MATCHES_REGEXP "^ar[0-9]+\(ht\|lm\|sr\)$" = 0
-    BEGIN
-      LAF fl#bg1pal#bgt_area_bmp STR_VAR res RET res END
-    END
-    cre WHEN VARIABLE_IS_SET $fl#bg1pal#bgt_compat_cre("%res%")
-    BEGIN
-      OUTER_SPRINT res $fl#bg1pal#bgt_compat_cre("%res%")
-    END
-    dlg WHEN VARIABLE_IS_SET $fl#bg1pal#bgt_compat_dlg("%res%")
-    BEGIN
-      OUTER_SPRINT res $fl#bg1pal#bgt_compat_dlg("%res%")
-    END
-    itm WHEN VARIABLE_IS_SET $fl#bg1pal#bgt_compat_itm("%res%")
-    BEGIN
-      OUTER_SPRINT res $fl#bg1pal#bgt_compat_itm("%res%")
-    END
-    mve WHEN VARIABLE_IS_SET $fl#bg1pal#bgt_compat_mve("%res%")
-    BEGIN
-      OUTER_SPRINT res $fl#bg1pal#bgt_compat_mve("%res%")
-    END
-    spl WHEN VARIABLE_IS_SET $fl#bg1pal#bgt_compat_spl("%res%")
-    BEGIN
-      OUTER_SPRINT res $fl#bg1pal#bgt_compat_spl("%res%")
-    END
-    wav WHEN VARIABLE_IS_SET $fl#bg1pal#bgt_compat_wav("%res%")
-    BEGIN
-      OUTER_SPRINT res $fl#bg1pal#bgt_compat_wav("%res%")
-    END
-    DEFAULT
-  END
-END
-
-DEFINE_ACTION_FUNCTION fl#bg1pal#tutu
-  STR_VAR
-    res = ""
-    ext = ""
-  RET
-    res
-BEGIN
-  ACTION_MATCH "%ext%" WITH
-    are mos wed WHEN "%res%" STRING_MATCHES_REGEXP "^ar[0-9]+$" = 0
-    BEGIN
-      LAF fl#bg1pal#fw STR_VAR res RET res END
-    END
-    bmp WHEN "%res%" STRING_MATCHES_REGEXP "^ar[0-9]+\(ht\|lm\|sr\)$" = 0
-    BEGIN
-      LAF fl#bg1pal#fw STR_VAR res RET res END
-    END
-    itm WHEN !VARIABLE_IS_SET $fl#bg1pal#tutu_compat_itm("%res%")
-    BEGIN
-      LAF fl#bg1pal#underscore STR_VAR res RET res END
-    END
-    mos WHEN "%res%" STRING_EQUAL_CASE "worldmap" // compat array instead?
-    BEGIN
-      LAF fl#bg1pal#underscore STR_VAR res RET res END
-    END
-    bam bcs bmp cre dlg mve sto tis wav
-    BEGIN
-      LAF fl#bg1pal#underscore STR_VAR res RET res END
-    END
-    DEFAULT
-  END
-END
-
-DEFINE_ACTION_FUNCTION fl#bg1pal#bgee
-  STR_VAR
-    res = ""
-    ext = ""
-  RET
-    res
-    ext
-BEGIN
-  ACTION_MATCH "%ext%" WITH
-    mve
-    BEGIN
-      OUTER_SPRINT ext wbm
-    END
-    DEFAULT
   END
 END
