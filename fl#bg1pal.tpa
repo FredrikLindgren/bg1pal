@@ -109,7 +109,7 @@ DEFINE_ACTION_FUNCTION fl#bg1pal#bgt
     res
 BEGIN
   ACTION_MATCH "%ext%" WITH
-    are mos wed tis WHEN VARIABLE_IS_SET $fl#bg1pal#bgt#area("%res%")
+    are bcs mos wed tis WHEN VARIABLE_IS_SET $fl#bg1pal#bgt#area("%res%")
     BEGIN
       OUTER_SPRINT res $fl#bg1pal#bgt#area("%res%")
     END
