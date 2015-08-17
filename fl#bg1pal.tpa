@@ -161,7 +161,7 @@ DEFINE_ACTION_FUNCTION fl#bg1pal#tutu
     res
 BEGIN
   ACTION_MATCH "%ext%" WITH
-    are mos wed WHEN "%res%" STRING_MATCHES_REGEXP "^ar[0-9]+$" = 0
+    are mos wed WHEN "%res%" STRING_MATCHES_REGEXP "^ar[0-9]+N?$" = 0
     BEGIN
       LAF fl#bg1pal#tutu#fw STR_VAR res RET res END
     END
@@ -215,7 +215,7 @@ BEGIN
     BEGIN
       OUTER_SPRINT res $fl#bg1pal#eet#2da("%res%")
     END
-    are mos wed bcs tis WHEN "%res%" STRING_MATCHES_REGEXP "^ar[0-9]+$" = 0
+    are mos wed bcs tis WHEN "%res%" STRING_MATCHES_REGEXP "^ar[0-9]+N?$" = 0
     BEGIN
       LAF fl#bg1pal#eet#bg STR_VAR res RET res END
     END
@@ -294,6 +294,7 @@ ACTION_DEFINE_ASSOCIATIVE_ARRAY fl#bg1pal#bgt#area BEGIN
   ar0020 => ara020
   ar0021 => ara021
   ar0100 => ar7200
+  ar0100n => ar7200n
   ar0101 => ar7201
   ar0102 => ar7202
   ar0103 => ar7203
@@ -362,10 +363,12 @@ ACTION_DEFINE_ASSOCIATIVE_ARRAY fl#bg1pal#bgt#area BEGIN
   ar0170 => ar7270
   ar0171 => ar7271
   ar0200 => ar7300
+  ar0200n => ar7300n
   ar0224 => ar7324
   ar0225 => ar7325
   ar0226 => ar7326
   ar0300 => ar7400
+  ar0300n => ar7400n
   ar0302 => ar7402
   ar0303 => ar7403
   ar0304 => ar7404
@@ -393,6 +396,7 @@ ACTION_DEFINE_ASSOCIATIVE_ARRAY fl#bg1pal#bgt#area BEGIN
   ar0515 => ard015
   ar0516 => ard016
   ar0600 => ar7600
+  ar0600n => ar0600n
   ar0601 => ar7601
   ar0602 => ar7602
   ar0603 => ar7603
@@ -412,6 +416,7 @@ ACTION_DEFINE_ASSOCIATIVE_ARRAY fl#bg1pal#bgt#area BEGIN
   ar0620 => ar7620
   ar0621 => ar7621
   ar0700 => ar7700
+  ar0700n => ar7700n
   ar0702 => ar7702
   ar0703 => ar7703
   ar0704 => ar7704
@@ -438,6 +443,7 @@ ACTION_DEFINE_ASSOCIATIVE_ARRAY fl#bg1pal#bgt#area BEGIN
   ar0725 => ar7725
   ar0726 => ar7726
   ar0800 => ar7800
+  ar0800n => ar7800n
   ar0801 => ar7801
   ar0802 => ar7802
   ar0803 => ar7803
@@ -466,6 +472,7 @@ ACTION_DEFINE_ASSOCIATIVE_ARRAY fl#bg1pal#bgt#area BEGIN
   ar1009 => aru009
   ar1010 => aru010
   ar1100 => ar8000
+  ar1100n => ar8000n
   ar1101 => ar8001
   ar1102 => ar8002
   ar1103 => ar8003
@@ -484,6 +491,7 @@ ACTION_DEFINE_ASSOCIATIVE_ARRAY fl#bg1pal#bgt#area BEGIN
   ar1116 => ar8016
   ar1117 => ar8017
   ar1200 => ar8100
+  ar1200n => ar8100n
   ar1201 => ar8101
   ar1202 => ar8102
   ar1203 => ar8103
@@ -500,6 +508,7 @@ ACTION_DEFINE_ASSOCIATIVE_ARRAY fl#bg1pal#bgt#area BEGIN
   ar1214 => ar8114
   ar1215 => ar8115
   ar1300 => ar8200
+  ar1300n => ar8200n
   ar1301 => ar8201
   ar1302 => ar8202
   ar1303 => ar8203
