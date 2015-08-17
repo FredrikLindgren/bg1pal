@@ -2,7 +2,8 @@
 
 This is a resource-name abstraction library for the different versions
 of Baldur's Gate. Supported versions are plain Baldur's Gate, Baldur's
-Gate Tutu, Baldur's Gate Trilogy and Baldur's Gate: Enhanced Edition.
+Gate Tutu, Baldur's Gate Trilogy, Baldur's Gate: Enhanced Edition and
+Baldur's Gate: Enhanced Edition Trilogy.
 
 The BG1 Platform-Abstraction Library converts canonical resource names
 into the appropriate form for the current platform via the function
