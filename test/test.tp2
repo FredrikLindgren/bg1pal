@@ -5,93 +5,206 @@ BEGIN ~fl#bg1pal test suite~
 
 INCLUDE ~%MOD_FOLDER%/fl#bg1pal.tpa~
 
-ACTION_DEFINE_ARRAY file_list BEGIN
-                    ar0125.are
-                    isw2h07.bam
-                    ctdc.bcs
-                    ar0125sr.bmp
-                    calaha.cre
+ACTION_DEFINE_ARRAY bgt_unchanged BEGIN
+                    backstab.2da
+                    imisc01.bam
+                    bassilus.bcs
+                    ajantisg.bmp
+                    aasim.cre
                     alora.dlg
-                    bdynah.dlg
-                    misc83.itm
-                    misc84.itm
-                    sw1h16.itm
-                    sw2h01.itm
+                    sw1h01.itm
                     worldmap.mos
-                    intro.mve
+                    deathand.mve
+                    spin101.spl
+                    highhedg.sto
+                    abela01.wav
+END
+
+ACTION_DEFINE_ASSOCIATIVE_ARRAY bgt_changed BEGIN
+  // Canonical => Platform-correct
+  ar0125.are   => ar7225.are
+  isw1h18.bam  => isw1hbal.bam
+  ar0100.bcs   => ar7200.bcs
+  imoen.bcs    => bgimoen.bcs
+  ar0125sr.bmp => ar7225sr.bmp
+  calaha.cre   => bgcalaha.cre
+  viconi.dlg   => bgviconi.dlg
+  misc89.itm   => bgmisc89.itm
+  ar0125.mos   => ar7225.mos
+  intro.mve    => bgintro.mve
+  spin996.spl  => bgin996.spl
+  ar0100n.tis  => ar7200n.tis
+  ar0125.tis   => ar7225.tis
+  black01.wav  => blackl01.wav
+  ar0100n.wed  => ar7200n.wed
+  ar0125.wed   => ar7225.wed
+END
+
+ACTION_DEFINE_ARRAY tutu_unchanged BEGIN
+                    backstab.2da
+                    misc89.itm
+                    arrive.mos
+                    spin996.spl
+END
+
+ACTION_DEFINE_ASSOCIATIVE_ARRAY tutu_changed BEGIN
+  // Canonical => Platform-correct
+  ar0125.are   => fw0125.are
+  imisc01.bam  => _imisc01.bam
+  ar0100.bcs   => _ar0100.bcs
+  ajantisg.bmp => _jantisg.bmp
+  ar0125sr.bmp => fw0125sr.bmp
+  aasim.cre    => _aasim.cre
+  alora.dlg    => _alora.dlg
+  sw1h01.itm   => _sw1h01.itm
+  ar0125.mos   => fw0125.mos
+  worldmap.mos => _orldmap.mos
+  intro.mve    => _intro.mve
+  ar0125.tis   => _ar0125.tis
+  highhedg.sto => _ighhedg.sto
+  black01.wav  => _black01.wav
+  ar0125.wed   => fw0125.wed
+END
+
+ACTION_DEFINE_ARRAY bgee_unchanged BEGIN
+                    backstab.2da
+                    ar0125.are
+                    imisc01.bam
+                    ar0100.bcs
+                    ar0125sr.bmp
+                    aasim.cre
+                    alora.dlg
+                    misc89.itm
+                    ar0125.mos
+                    ar0125.tis
                     spin996.spl
                     highhedg.sto
                     black01.wav
+                    ar0125.wed
 END
 
-ACTION_DEFINE_ARRAY area_list BEGIN
-                    ar0125
+ACTION_DEFINE_ASSOCIATIVE_ARRAY bgee_changed BEGIN
+  // Canonical => Platform-correct
+  intro.mve    => intro.wbm
 END
 
-ACTION_DEFINE_ARRAY movie_list BEGIN
-                    intro
+ACTION_DEFINE_ARRAY eet_unchanged BEGIN
+                    backstab.2da
+                    imisc01.bam
+                    ajantisg.bmp
+                    aasim.cre
+                    alora.dlg
+                    sw1h01.itm
+                    worldmap.mos
+                    spin101.spl
+                    highhedg.sto
+                    abela01.wav
 END
 
-DEFINE_ACTION_FUNCTION fe
+ACTION_DEFINE_ASSOCIATIVE_ARRAY eet_changed BEGIN
+  // Canonical => Platform-correct
+  chptxt0.2da  => chptxt0_.2da
+  ar0125.are   => bg0125.are
+  isw1h18.bam  => isw1h18_.bam
+  ar0125.bcs   => bg0125.bcs
+  imoen.bcs    => imoen_.bcs
+  ar0125sr.bmp => bg0125sr.bmp
+  calaha.cre   => calaha_.cre
+  viconi.dlg   => viconi_.dlg
+  misc89.itm   => misc89_.itm
+  ar0125.mos   => bg0125.mos
+  intro.mve    => introbg1.wbm
+  deathand.mve => deathand.wbm
+  ar0100n.tis  => bg0100n.tis
+  ar0125.tis   => bg0125.tis
+  spin996.spl  => bgin996.spl
+  bag02.sto    => bag02_.sto
+  black01.wav  => black01_.wav
+  ar0100n.wed  => bg0100n.wed
+  ar0125.wed   => bg0125.wed
+END
+
+ACTION_DEFINE_ASSOCIATIVE_ARRAY resource_tests BEGIN
+  ar0125   => are
+  ar0125sr => bmp
+  highhedg => sto
+END
+
+/*
+ * Verify that files that should be converted are converted into the expected form
+ */
+DEFINE_ACTION_FUNCTION test_changed
   STR_VAR
-    file = ""
+    array = ""
 BEGIN
-  ACTION_IF !FILE_EXISTS_IN_GAME "%file%" BEGIN
-    WARN ~WARNING: The file %file% does not exist~
-  END ELSE BEGIN
-    PRINT ~The file %file% exists~
+  ACTION_PHP_EACH "%array%" AS canonical => platform BEGIN
+    LAF fl#bg1pal STR_VAR file = EVAL "%canonical%" RET file END
+    ACTION_IF "%platform%" STR_CMP "%file%" BEGIN
+      WARN "ERROR: %canonical% resulted in %file%; %platform% was expected"
+    END
+    ACTION_IF !FILE_EXISTS_IN_GAME "%platform%" AND
+              "%platform%" STRING_MATCHES_REGEXP ".+\.\(mve\|wbm\)"
+    BEGIN
+      WARN "ERROR: %canonical% resulted in %platform%, but %platform% does not exist"
+    END
   END
 END
 
-DEFINE_ACTION_FUNCTION test_file_list BEGIN
-  ACTION_PHP_EACH file_list AS _ => file BEGIN
-    LAF fl#bg1pal STR_VAR file RET file END
-    LAF fe STR_VAR file END
-  END
-END
-
-DEFINE_ACTION_FUNCTION test_resource_list
+/*
+ * Verify that files that should not be converted are unaltered
+ */
+DEFINE_ACTION_FUNCTION test_unchanged
   STR_VAR
-    list = ""
-    type = ""
+    array = ""
 BEGIN
-  ACTION_PHP_EACH "%list%" AS _ => resource BEGIN
-    LAF fl#bg1pal STR_VAR resource type RET resource type END
-    LAF fe STR_VAR file = EVAL "%resource%.%type%" END
+  ACTION_PHP_EACH "%array%" AS _ => input BEGIN
+    LAF fl#bg1pal STR_VAR file = EVAL "%input%" RET file END
+    ACTION_IF "%input%" STR_CMP "%file%" BEGIN
+      WARN "ERROR: %input% resulted in %file%; no change was expected"
+    END
   END
 END
 
-DEFINE_ACTION_FUNCTION test_all_resource_lists BEGIN
-  LAF test_resource_list STR_VAR list = "area_list" type = "ARE" END
-  LAF test_resource_list STR_VAR list = "movie_list" type = "MVE" END
-END
-
-DEFINE_ACTION_FUNCTION test_tutu BEGIN
-  LAF test_file_list END
-  LAF test_all_resource_lists END
-END
-
-DEFINE_ACTION_FUNCTION test_bgt BEGIN
-  LAF test_file_list END
-  LAF test_all_resource_lists END
-END
-
-DEFINE_ACTION_FUNCTION test_bg1 BEGIN
-  LAF test_file_list END
-  LAF test_all_resource_lists END
+/*
+ * Verify that the resource+type interface produces the same results as the file interface
+ */
+DEFINE_ACTION_FUNCTION test_resources
+  STR_VAR
+    array = ""
+BEGIN
+  ACTION_PHP_EACH "%array%" AS input_resource => input_type BEGIN
+    LAF fl#bg1pal STR_VAR resource = EVAL "%input_resource%" type = EVAL "%input_type%" RET resource type END
+    LAF fl#bg1pal STR_VAR file = EVAL "%input_resource%.%input_type%" RET file END
+    ACTION_IF "%resource%.%type%" STR_CMP "%file%" BEGIN
+      WARN "ERROR: input resource %input_resource% and input type %input_type% resulted in output %resource%.%type% (%resource% and %type%); %file% was expected"
+    END
+  END
 END
 
 ACTION_IF GAME_IS ~tutu tutu_totsc~ BEGIN
   PRINT ~Testing resource conversion on Tutu~
-  LAF test_tutu END
+  LAF test_changed STR_VAR array = tutu_changed END
+  LAF test_unchanged STR_VAR array = tutu_unchanged END
+  LAF test_resources STR_VAR array = resource_tests END
 END
 
 ACTION_IF GAME_IS ~bgt~ BEGIN
   PRINT ~Testing resource conversion on BGT~
-  LAF test_bgt END
+  LAF test_changed STR_VAR array = bgt_changed END
+  LAF test_unchanged STR_VAR array = bgt_unchanged END
+  LAF test_resources STR_VAR array = resource_tests END
 END
 
-ACTION_IF GAME_IS ~bg1 totsc bgee~ BEGIN
-  PRINT ~Testing resource conversion on BG1/BG:EE~
-  LAF test_bg1 END
+ACTION_IF GAME_IS ~bgee~ BEGIN
+  PRINT ~Testing resource conversion on BG:EE~
+  LAF test_changed STR_VAR array = bgee_changed END
+  LAF test_unchanged STR_VAR array = bgee_unchanged END
+  LAF test_resources STR_VAR array = resource_tests END
+END
+
+ACTION_IF GAME_IS ~eet~ BEGIN
+  PRINT ~Testing resource conversion on EET~
+  LAF test_changed STR_VAR array = eet_changed END
+  LAF test_unchanged STR_VAR array = eet_unchanged END
+  LAF test_resources STR_VAR array = resource_tests END
 END
