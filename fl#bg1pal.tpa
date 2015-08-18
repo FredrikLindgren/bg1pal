@@ -169,6 +169,14 @@ BEGIN
     BEGIN
       LAF fl#bg1pal#tutu#fw STR_VAR res RET res END
     END
+    bmp WHEN "%res%" STRING_MATCHES_REGEXP "^[a-z0-9]+\(l\|s\)$" = 0
+    BEGIN
+      LAF fl#bg1pal#part_portrait_suffix STR_VAR res RET res suffix END
+      ACTION_IF VARIABLE_IS_SET $fl#bg1pal#tutu#portraits("%res%") BEGIN
+        OUTER_SPRINT res $fl#bg1pal#tutu#portraits("%res%")
+        OUTER_SPRINT res "%res%%suffix%"
+      END
+    END
     itm WHEN !VARIABLE_IS_SET $fl#bg1pal#tutu#itm("%res%")
     BEGIN
       LAF fl#bg1pal#tutu#underscore STR_VAR res RET res END
@@ -177,7 +185,7 @@ BEGIN
     BEGIN
       LAF fl#bg1pal#tutu#underscore STR_VAR res RET res END
     END
-    bam bcs bmp cre dlg mve sto tis wav
+    bam bcs cre dlg mve sto tis wav
     BEGIN
       LAF fl#bg1pal#tutu#underscore STR_VAR res RET res END
     END
@@ -1087,6 +1095,40 @@ ACTION_DEFINE_ASSOCIATIVE_ARRAY fl#bg1pal#tutu#itm BEGIN
   //chan07 => 1 //_chan07 is used in EasyTutu
 END
 
+ACTION_DEFINE_ASSOCIATIVE_ARRAY fl#bg1pal#tutu#portraits BEGIN
+  safana  => _afana
+  kagain  => _again
+  jaheira => _aheira
+  faldorn => _aldorn
+  man1    => _an1
+  man2    => _an2
+  xan     => _an
+  garrick => _arrick
+  edwin   => _dwin
+  gendwrf => _endwrf
+  genmelf => _enmelf
+  geslick => _eslick
+  khalid  => _halid
+  shartel => _hartel
+  tiax    => _iax
+  viconia => _iconia
+  minsc   => _insc
+  kivan   => _ivan
+  ajantis => _jantis
+  skie    => _kie
+  eldoth  => _ldoth
+  alora   => _lora
+  imoen   => _moen
+  woman1  => _oman1
+  woman2  => _oman2
+  montar  => _ontar
+  coran   => _oran
+  branwe  => _ranwe
+  quayle  => _uayle
+  dynahe  => _ynahe
+  xzar    => _zar
+END
+
 DEFINE_ACTION_FUNCTION fl#bg1pal#tutu#underscore
   STR_VAR
     res = ""
@@ -1707,5 +1749,18 @@ BEGIN
     END
   END ELSE BEGIN
     WARN ~WARNING: fl#bg1pal#partition_file was given an empty string~
+  END
+END
+
+DEFINE_ACTION_FUNCTION fl#bg1pal#part_portrait_suffix
+  STR_VAR
+    res = ""
+  RET
+    res
+    suffix
+BEGIN
+  OUTER_INNER_PATCH "%res%" BEGIN
+    READ_ASCII 0 res (BUFFER_LENGTH - 1)
+    READ_ASCII BUFFER_LENGTH - 1 suffix (1)
   END
 END

@@ -45,6 +45,7 @@ ACTION_DEFINE_ARRAY tutu_unchanged BEGIN
                     misc89.itm
                     arrive.mos
                     spin996.spl
+                    ajantisg.bmp
 END
 
 ACTION_DEFINE_ASSOCIATIVE_ARRAY tutu_changed BEGIN
@@ -52,7 +53,7 @@ ACTION_DEFINE_ASSOCIATIVE_ARRAY tutu_changed BEGIN
   ar0125.are   => fw0125.are
   imisc01.bam  => _imisc01.bam
   ar0100.bcs   => _ar0100.bcs
-  ajantisg.bmp => _jantisg.bmp
+  ajantisl.bmp => _jantisl.bmp
   ar0125sr.bmp => fw0125sr.bmp
   aasim.cre    => _aasim.cre
   alora.dlg    => _alora.dlg
