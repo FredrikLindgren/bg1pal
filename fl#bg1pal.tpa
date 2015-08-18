@@ -26,7 +26,7 @@
  * Public interface
  ********************************************************************/
 
-OUTER_SPRINT fl#bg1pal#version "1.1.1"
+OUTER_SPRINT fl#bg1pal#version "1.2.0"
 
 DEFINE_ACTION_FUNCTION fl#bg1pal
   STR_VAR
