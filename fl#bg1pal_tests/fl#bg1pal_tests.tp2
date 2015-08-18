@@ -1,4 +1,4 @@
-BACKUP "test/backup"
+BACKUP "fl#bg1pal_tests/backup"
 AUTHOR Wisp
 
 BEGIN ~fl#bg1pal test suite~
