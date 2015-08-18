@@ -1687,7 +1687,7 @@ BEGIN
       LAF SUBSTRING
         INT_VAR
           start = 0
-          length = slength - length - 1
+          length = length
         STR_VAR
           string = EVAL "%file%"
         RET
@@ -1695,8 +1695,8 @@ BEGIN
       END
       LAF SUBSTRING
         INT_VAR
-          start = slength - length
-          length
+          start = length + 1
+          length = slength - length - 1
         STR_VAR
           string = EVAL "%file%"
         RET
