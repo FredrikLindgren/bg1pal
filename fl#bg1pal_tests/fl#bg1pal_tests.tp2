@@ -347,7 +347,12 @@ ACTION_IF GAME_IS ~eet~ BEGIN
 END
 
 ACTION_IF GAME_IS ~bg1 totsc~ BEGIN
-  PRINT ~Testing interfaces on BG1~
+  PRINT ~Testing interfaces and absence of resource conversion on BG1~
+  LAF test_unchanged STR_VAR array = bgt_unchanged END
+  LAF test_unchanged STR_VAR array = tutu_unchanged END
+  LAF test_unchanged STR_VAR array = bgee_unchanged END
+  LAF test_unchanged STR_VAR array = eet_unchanged END
+  LAF test_resources STR_VAR array = resource_tests END
   LAF test_interfaces
     STR_VAR
       array#to_file = interface_tests#bg1
