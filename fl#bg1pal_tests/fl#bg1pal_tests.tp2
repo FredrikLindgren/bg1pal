@@ -171,6 +171,16 @@ ACTION_DEFINE_ASSOCIATIVE_ARRAY interface_tests#eet#from_file BEGIN
   ar0125, are => bg0125.are
 END
 
+ACTION_DEFINE_ASSOCIATIVE_ARRAY interface_tests#bg2 BEGIN
+  backstab, 2da => backstab.2da
+  ar0300, are => ar0300.are
+END
+
+ACTION_DEFINE_ASSOCIATIVE_ARRAY interface_tests#bg1 BEGIN
+  backstab, 2da => backstab.2da
+  ar0125, are => ar0125.are
+END
+
 /*
  * Verify that files that should be converted are converted into the expected form
  */
@@ -333,5 +343,23 @@ ACTION_IF GAME_IS ~eet~ BEGIN
     STR_VAR
       array#to_file = interface_tests#eet#to_file
       array#from_file = interface_tests#eet#from_file
+  END
+END
+
+ACTION_IF GAME_IS ~bg1 totsc~ BEGIN
+  PRINT ~Testing interfaces on BG1~
+  LAF test_interfaces
+    STR_VAR
+      array#to_file = interface_tests#bg1
+      array#from_file = interface_tests#bg1
+  END
+END
+
+ACTION_IF GAME_IS ~soa tob bg2ee~ BEGIN
+  PRINT ~Testing interfaces on BG2~
+  LAF test_interfaces
+    STR_VAR
+      array#to_file = interface_tests#bg2
+      array#from_file = interface_tests#bg2
   END
 END
