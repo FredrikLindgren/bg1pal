@@ -131,6 +131,46 @@ ACTION_DEFINE_ASSOCIATIVE_ARRAY resource_tests BEGIN
   highhedg => sto
 END
 
+ACTION_DEFINE_ASSOCIATIVE_ARRAY interface_tests#bgt#to_file BEGIN
+  backstab, 2da => backstab.2da
+  ar0125, are => ar7225.are
+END
+
+ACTION_DEFINE_ASSOCIATIVE_ARRAY interface_tests#tutu#to_file BEGIN
+  backstab, 2da => backstab.2da
+  ar0125, are => fw0125.are
+END
+
+ACTION_DEFINE_ASSOCIATIVE_ARRAY interface_tests#bgee#to_file BEGIN
+  backstab, 2da => backstab.2da
+  intro, mve => intro.wbm
+END
+
+ACTION_DEFINE_ASSOCIATIVE_ARRAY interface_tests#eet#to_file BEGIN
+  backstab, 2da => backstab.2da
+  ar0125, are => bg0125.are
+END
+
+ACTION_DEFINE_ASSOCIATIVE_ARRAY interface_tests#bgt#from_file BEGIN
+  backstab, 2da => backstab.2da
+  ar7225, are => ar0125.are
+END
+
+ACTION_DEFINE_ASSOCIATIVE_ARRAY interface_tests#tutu#from_file BEGIN
+  backstab, 2da => backstab.2da
+  fw0125, are => ar0125.are
+END
+
+ACTION_DEFINE_ASSOCIATIVE_ARRAY interface_tests#bgee#from_file BEGIN
+  backstab, 2da => backstab.2da
+  intro, wbm => intro.mve
+END
+
+ACTION_DEFINE_ASSOCIATIVE_ARRAY interface_tests#eet#from_file BEGIN
+  backstab, 2da => backstab.2da
+  ar0125, are => bg0125.are
+END
+
 /*
  * Verify that files that should be converted are converted into the expected form
  */
@@ -182,11 +222,57 @@ BEGIN
   END
 END
 
+/*
+ * Verify that resource+type interface produces file result and vice versa
+ */
+DEFINE_ACTION_FUNCTION test_interfaces
+  STR_VAR
+    array#to_file = ""
+    array#from_file = ""
+BEGIN
+  LAF test_interfaces#parts_to_file STR_VAR array = EVAL "%array#to_file%" END
+  LAF test_interfaces#file_to_parts STR_VAR array = EVAL "%array#from_file%" END
+END
+DEFINE_ACTION_FUNCTION test_interfaces#parts_to_file
+  STR_VAR
+    array = ""
+BEGIN
+  ACTION_PHP_EACH "%array%" AS res_parts => expected_file BEGIN
+    OUTER_SPRINT resource "%res_parts_0%"
+    OUTER_SPRINT type "%res_parts_1%"
+    LAF fl#bg1pal STR_VAR resource type RET file END
+    ACTION_IF "%expected_file%" STR_CMP "%file%" BEGIN
+      WARN "ERROR: %file% was obtained from resource: %resource% and type: %type%; %expected_file% was expected"
+    END
+  END
+END
+DEFINE_ACTION_FUNCTION test_interfaces#file_to_parts
+  STR_VAR
+    array = ""
+BEGIN
+  ACTION_PHP_EACH "%array%" AS res_parts => file BEGIN
+    OUTER_SPRINT expected_res "%res_parts_0%"
+    OUTER_SPRINT expected_type "%res_parts_1%"
+    LAF fl#bg1pal STR_VAR file RET resource type END
+    ACTION_IF "%expected_res%" STR_CMP "%resource%" BEGIN
+      WARN "ERROR: %file% resulted in resource: %resource%; %expected_res% was expected"
+    END
+    ACTION_IF "%expected_type%" STR_CMP "%type%" BEGIN
+      WARN "ERROR: %file% resulted in type: %type%; %expected_type% was expected"
+    END
+  END
+END
+
 ACTION_IF GAME_IS ~tutu tutu_totsc~ BEGIN
   PRINT ~Testing resource conversion on Tutu~
   LAF test_changed STR_VAR array = tutu_changed END
   LAF test_unchanged STR_VAR array = tutu_unchanged END
   LAF test_resources STR_VAR array = resource_tests END
+  LAF test_interfaces
+    STR_VAR
+      array#to_file = interface_tests#tutu#to_file
+      array#from_file = interface_tests#tutu#from_file
+  END
 END
 
 ACTION_IF GAME_IS ~bgt~ BEGIN
@@ -194,6 +280,11 @@ ACTION_IF GAME_IS ~bgt~ BEGIN
   LAF test_changed STR_VAR array = bgt_changed END
   LAF test_unchanged STR_VAR array = bgt_unchanged END
   LAF test_resources STR_VAR array = resource_tests END
+  LAF test_interfaces
+    STR_VAR
+      array#to_file = interface_tests#bgt#to_file
+      array#from_file = interface_tests#bgt#from_file
+  END
 END
 
 ACTION_IF GAME_IS ~bgee~ BEGIN
@@ -201,6 +292,11 @@ ACTION_IF GAME_IS ~bgee~ BEGIN
   LAF test_changed STR_VAR array = bgee_changed END
   LAF test_unchanged STR_VAR array = bgee_unchanged END
   LAF test_resources STR_VAR array = resource_tests END
+  LAF test_interfaces
+    STR_VAR
+      array#to_file = interface_tests#bgee#to_file
+      array#from_file = interface_tests#bgee#from_file
+  END
 END
 
 ACTION_IF GAME_IS ~eet~ BEGIN
@@ -208,4 +304,9 @@ ACTION_IF GAME_IS ~eet~ BEGIN
   LAF test_changed STR_VAR array = eet_changed END
   LAF test_unchanged STR_VAR array = eet_unchanged END
   LAF test_resources STR_VAR array = resource_tests END
+  LAF test_interfaces
+    STR_VAR
+      array#to_file = interface_tests#eet#to_file
+      array#from_file = interface_tests#eet#from_file
+  END
 END
